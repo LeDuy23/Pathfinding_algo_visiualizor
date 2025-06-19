@@ -126,8 +126,8 @@ export default function MazeGrid() {
     matrix[1][0] = "start";
     matrix[height - 2][width - 1] = "end";
 
-    setWidth(width);
-    setHeight(height);
+    setWidth(matrix[0].length);
+    setHeight(matrix.length);
     setMaze(matrix);
   }
 
