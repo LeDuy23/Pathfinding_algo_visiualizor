@@ -1,6 +1,6 @@
 main {
 }
-maze-grid{
+.maze-grid{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,7 +19,7 @@ maze-grid{
 
 .maze-button{
   background-color: #00c7fc;
-  margrin: 10px;
+  margin: 10px;
   color: white;
   cursor: pointer;
   font-size: 16px;

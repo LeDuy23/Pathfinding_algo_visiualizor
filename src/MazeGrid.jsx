@@ -137,10 +137,10 @@ export default function MazeGrid() {
         <button className="maze-button" onClick={() => generateMaze(10, 10)}>
           Refresh Maze
         </button>
-        <button className="maze-button" onClick={() => bfs([1, 0])}>
+        <button className="maze-button" onClick={() => bfs([0, 1])}>
           Breadth First Search
         </button>
-        <button className="maze-button" onClick={() => dfs([1, 0])}>
+        <button className="maze-button" onClick={() => dfs([0, 1])}>
           Depth First Search
         </button>
       </div>
