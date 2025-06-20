@@ -9,7 +9,7 @@ export default function MazeGrid({width = 10, height = 10}) {
 
   useEffect(() => {
     generateMaze(height, width);
-  },[])
+  }, [])
 
   function bfs(startNode) {
     let queue = [startNode];
