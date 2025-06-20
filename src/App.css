@@ -56,3 +56,6 @@ main {
 .cell.end{
   background-color: red;
 }
+.cell.visited{
+  background-color: #53d5fd;
+}

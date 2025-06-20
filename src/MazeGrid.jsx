@@ -1,24 +1,28 @@
 import './App.css';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function MazeGrid() {
-  const initialMaze = [
-    ["wall", "wall", "wall", "wall"],
-    ["start", "path", "path", "wall"],
-    ["wall", "wall", "path", "wall"],
-    ["wall", "wall", "path", "end"],
-    ["wall", "wall", "wall", "wall"],
-  ];
+export default function MazeGrid({width = 10, height = 10}) {
 
-  const [maze, setMaze] = useState(initialMaze);
-  const [width, setWidth] = useState(initialMaze[0].length);
-  const [height, setHeight] = useState(initialMaze.length);
+
+  const [maze, setMaze] = useState([]);
+  const [timeoutIds, setTimeoutIds] = useState([0, 1]);
+
+  useEffect(() => {
+    generateMaze(height, width);
+  },[])
 
   function bfs(startNode) {
     let queue = [startNode];
     let visited = new Set([`${startNode[0]},${startNode[1]}`]);
 
     function visitedCell([x, y]) {
+      setMaze((prevMaze)=>  prevMaze.map((row, rowIndex) =>  row.map((cell, cellIndex) =>{
+        if(rowIndex === y && cellIndex === x){
+          return cell === 'end' ? 'end':'visited';
+        }
+        return cell;
+      })
+      ))
       if (maze[y][x] === 'end') {
         console.log("BFS: path found");
         return true;
@@ -48,7 +52,9 @@ export default function MazeGrid() {
           queue.push([nx, ny]);
         }
       }
-      return step();
+      const timeoutIds = setTimeout(step, 100);
+      setTimeoutIds((prevTimeoutIds) => [...prevTimeoutIds, timeoutIds]);
+      
     }
 
     return step();
@@ -59,6 +65,13 @@ export default function MazeGrid() {
     let visited = new Set([`${startNode[0]},${startNode[1]}`]);
 
     function visitedCell([x, y]) {
+      setMaze((prevMaze)=>  prevMaze.map((row, rowIndex) =>  row.map((cell, cellIndex) =>{
+        if(rowIndex === y && cellIndex === x){
+          return cell === 'end' ? 'end':'visited';
+        }
+        return cell;
+      })
+      ))
       if (maze[y][x] === 'end') {
         console.log("DFS: path found");
         return true;
@@ -88,7 +101,8 @@ export default function MazeGrid() {
           stack.push([nx, ny]);
         }
       }
-      return step();
+      const timeoutIds = setTimeout(step, 100);
+      setTimeoutIds((prevTimeoutIds) => [...prevTimeoutIds, timeoutIds]);
     }
 
     return step();
@@ -125,16 +139,18 @@ export default function MazeGrid() {
     carve_path(1, 1);
     matrix[1][0] = "start";
     matrix[height - 2][width - 1] = "end";
-
-    setWidth(matrix[0].length);
-    setHeight(matrix.length);
     setMaze(matrix);
   }
 
+  function refreshMaze(){
+     timeoutIds.forEach(clearTimeout);
+     setTimeoutIds([]);
+     generateMaze(height, width);
+  }
   return (
     <div className="maze-grid">
       <div className="controls">
-        <button className="maze-button" onClick={() => generateMaze(10, 10)}>
+        <button className="maze-button" onClick={() => refreshMaze(10, 10)}>
           Refresh Maze
         </button>
         <button className="maze-button" onClick={() => bfs([0, 1])}>
